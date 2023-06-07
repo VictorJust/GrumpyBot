@@ -21,12 +21,22 @@ namespace TelegramBotExperiments
             if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
             {
                 var message = update.Message;
-                if (message.Text.ToLower() == "/start")
+
+                switch (message.Text.ToLower())
                 {
-                    await botClient.SendTextMessageAsync(message.Chat, "Good day, or bad one. Don't care, actually.");
-                    return;
+                    case "/start":
+                        await botClient.SendTextMessageAsync(message.Chat, "Good day, or bad one. Don't care, actually.");
+                        break;
+                    case "/authorinfo":
+                        await botClient.SendTextMessageAsync(message.Chat, "Why not, who wants privacy? Here we go. " +
+                            "\n HH: https://hh.ru/resume/cc62699eff0bc63f340039ed1f63564c593858" +
+                            "\n LinkedIn: https://www.linkedin.com/in/victor-evseenko-99218b25b/" +
+                            "\n GitHub: https://github.com/VictorJust");
+                        break;
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, "I wasn't waiting for anyone. But whatever, feel yourself at home.");
+                        break;
                 }
-                await botClient.SendTextMessageAsync(message.Chat, "I wasn't waiting for anyone. But whatever, feel yourself at home.");
             }
         }
 
