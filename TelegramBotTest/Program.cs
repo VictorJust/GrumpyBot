@@ -36,12 +36,12 @@ namespace TelegramBotExperiments
                 new[]
                 {
                     InlineKeyboardButton.WithCallbackData("What a bot", "/whatabot"),
-                    InlineKeyboardButton.WithCallbackData("Call the manager", "option4"),
+                    InlineKeyboardButton.WithCallbackData("Call the manager", "option4 / default message"),
                 }
             });
 
                     // Send the inline keyboard as a reply to the user's message
-                    await botClient.SendTextMessageAsync(message.Chat, "Please choose an option:", replyMarkup: inlineKeyboard);
+                    await botClient.SendTextMessageAsync(message.Chat, "You don't even have to write:", replyMarkup: inlineKeyboard);
                 }
             }
             else if (update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery)
@@ -54,6 +54,7 @@ namespace TelegramBotExperiments
                 {
                     case "/start":
                         await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, " Good day, or bad one. Don't care, actually." +
+                            "\n If you don't like buttons, boomer, you can use oldschool queries:" +
                             "\n /authorinfo - guess what it is about" +
                             "\n /whatabot - why you are here, why I am here");
                         break;
@@ -64,7 +65,7 @@ namespace TelegramBotExperiments
                             "\n GitHub: https://github.com/VictorJust");
                         break;
                     case "/whatabot":
-                        await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, " In previous life I was cursed for... None of you business actually. " +
+                        await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, " In previous life I was cursed for... None of you business actually." +
                             "\n And now I am a bot manager. So ask me anything. I won't be surprised, won't care and most likely won't be helpful.");
                         break;
                     default:
