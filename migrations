@@ -1,0 +1,3 @@
+MSBUILD : error MSB1009: файл проекта не существует.
+Ключ: C:\Users\Alexandra\source\repos\hurrdurr\TelegramBotTest\add
+Unable to retrieve project metadata. Ensure it's an SDK-style project. If you're using a custom BaseIntermediateOutputPath or MSBuildProjectExtensionsPath values, Use the --msbuildprojectextensionspath option.

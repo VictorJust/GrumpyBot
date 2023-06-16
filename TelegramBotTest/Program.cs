@@ -13,7 +13,7 @@ namespace TelegramBotExperiments
     class Program
     {
         // Initialising a bot with personal key
-        static ITelegramBotClient bot = new TelegramBotClient("KEY");
+        static ITelegramBotClient bot = new TelegramBotClient("5997377638:AAFDUUbP9hC4rPpm5BmOO-x7zckgQUg9le0");
         public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             // Wait for a text from a user and/or send greetings message
