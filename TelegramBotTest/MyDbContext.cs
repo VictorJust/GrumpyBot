@@ -20,6 +20,10 @@ namespace TelegramBotTest
         // Define DbSet properties for your entities
         public DbSet<User> Users { get; set; }
 
-        // Other DbSet properties as needed
+        // Method to retrieve a User entity by ID
+        public async Task<User> GetUserById(int id)
+        {
+            return await Users.FindAsync(id);
+        }
     }
 }
