@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace TelegramBotTest
 {
@@ -12,10 +13,11 @@ namespace TelegramBotTest
 
     public class MyDbContext : DbContext
     {
-        public MyDbContext(DbContextOptions<MyDbContext> options)
-            : base(options)
+        public MyDbContext()
+    : base(new DbContextOptionsBuilder<MyDbContext>().UseMySQL("server=127.0.0.1;database=mydatabase;user=root;password=db14_06MyTry").Options)
         {
         }
+
 
         // Define DbSet properties for your entities
         public DbSet<User> Users { get; set; }
@@ -23,7 +25,12 @@ namespace TelegramBotTest
         // Method to retrieve a User entity by ID
         public async Task<User> GetUserById(int id)
         {
-            return await Users.FindAsync(id);
+            return await Users.FirstOrDefaultAsync(user => user.Id == id);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseMySQL("server=127.0.0.1;database=mydatabase;user=root;password=db14_06MyTry");
         }
     }
 }

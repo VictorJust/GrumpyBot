@@ -2,19 +2,19 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bots.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBotTest;
 
 namespace TelegramBotExperiments
 {
     class Program
     {
         // Initialising a bot with personal key
-        static ITelegramBotClient bot = new TelegramBotClient("5997377638:AAFDUUbP9hC4rPpm5BmOO-x7zckgQUg9le0");
-        public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        static ITelegramBotClient bot = new TelegramBotClient("key");
+        public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
         {
             // Wait for a text from a user and/or send greetings message
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
@@ -36,7 +36,7 @@ namespace TelegramBotExperiments
                 new[]
                 {
                     InlineKeyboardButton.WithCallbackData("What a bot", "/whatabot"),
-                    InlineKeyboardButton.WithCallbackData("Call the manager", "option4 / default message"),
+                    InlineKeyboardButton.WithCallbackData("Register", "/register"),
                 }
             });
 
@@ -68,6 +68,9 @@ namespace TelegramBotExperiments
                         await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, " In previous life I was cursed for... None of you business actually." +
                             "\n And now I am a bot manager. So ask me anything. I won't be surprised, won't care and most likely won't be helpful.");
                         break;
+                    case "/register":
+                        await RegisterUserAsync(callbackQuery.Message);
+                        break;
                     default:
                         await botClient.SendTextMessageAsync(callbackQuery.Message.Chat, "I wasn't waiting for anyone. But whatever, feel yourself at home.");
                         break;
@@ -79,6 +82,33 @@ namespace TelegramBotExperiments
         {
             // Throw excetion
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+        }
+
+        private static async Task RegisterUserAsync(Message message)
+        {
+            // Extract user information from the message
+            int userId = (int)message.From.Id;
+            string username = message.From.Username;
+            string firstName = message.From.FirstName;
+            string lastName = message.From.LastName;
+
+            // Create a new User object
+            TelegramBotTest.User user = new TelegramBotTest.User
+            {
+                Id = userId,
+                Name = username,
+                Email = $"{firstName}.{lastName}@example.com"
+            };
+
+            // Add the user to the database
+            using (var dbContext = new MyDbContext())
+            {
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Send a response message to the user
+            await bot.SendTextMessageAsync(message.Chat.Id, "User registration successful!");
         }
 
         static void Main(string[] args)
